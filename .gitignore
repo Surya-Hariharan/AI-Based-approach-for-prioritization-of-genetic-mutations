@@ -2,37 +2,94 @@
 __pycache__/
 *.py[cod]
 *$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
 
-# Environments
+# PyTorch Model Files
+*.pth
+*.pt
+
+# Virtual Environments
 .env
 .venv
 venv/
 env/
+ENV/
+env.bak/
+venv.bak/
 
 # IDEs
 .vscode/
 .idea/
+*.swp
+*.swo
+*~
 
 # Jupyter
-.ipynb_checkpoints
+.ipynb_checkpoints/
+*.ipynb_checkpoints
 
-# Logs
-*.log
-logs/
-reports/results/logs/
-
-# Data
-data/raw/
-data/processed/
-models/
-reports/results/checkpoints/
-*.vcf
-*.vcf.gz
-*.bam
-*.csv
+# Data Files (keep structure, exclude large files)
+data/uploads/
+data/raw/*.csv
+data/raw/*.vcf
+data/raw/*.gz
+data/interim/*.csv
+data/processed/*.csv
 !data/raw/.gitkeep
+!data/interim/.gitkeep  
 !data/processed/.gitkeep
 
-# OS
+# Model Checkpoints (large binary files)
+reports/results/checkpoints/*.pth
+reports/results/checkpoints/*.joblib
+reports/results/checkpoints/*.pkl
+
+# Logs
+logs/
+*.log
+reports/results/logs/
+
+# OS Files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
+
+# Flask
+instance/
+.webassets-cache
+
+# Testing & Coverage
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Scientific Computing
+*.pkl
+*.pickle
