@@ -10,6 +10,7 @@ from sklearn.base import BaseEstimator, ClassifierMixin
 from typing import List, Dict, Any, Optional
 import os
 import joblib
+from tqdm.auto import tqdm
 
 # Check for XGBoost/LightGBM
 try:
@@ -53,7 +54,7 @@ class PyTorchClassifierWrapper(BaseEstimator, ClassifierMixin):
         dataset = torch.utils.data.TensorDataset(X_tensor, y_tensor)
         loader = torch.utils.data.DataLoader(dataset, batch_size=self.batch_size, shuffle=True)
         
-        for epoch in range(self.epochs):
+        for epoch in tqdm(range(self.epochs), desc="Training epochs", leave=False):
             for batch_X, batch_y in loader:
                 optimizer.zero_grad()
                 outputs = self.model(batch_X)
@@ -127,9 +128,9 @@ class StackingEnsemble:
         print(f"Training Stacking Ensemble with {len(self.models)} base models...")
         
         # OOF Predictions
-        for i, (name, model) in enumerate(self.models):
+        for i, (name, model) in enumerate(tqdm(self.models, desc="Base models")):
             print(f"  Training {name}...")
-            for train_idx, val_idx in kfold.split(X, y):
+            for fold_idx, (train_idx, val_idx) in enumerate(tqdm(kfold.split(X, y), total=n_folds, desc=f"{name} folds", leave=False)):
                 X_train, X_val = X[train_idx], X[val_idx]
                 y_train, y_val = y[train_idx], y[val_idx]
                 
@@ -147,6 +148,7 @@ class StackingEnsemble:
                 meta_features[val_idx, i] = preds
                 
             # After K-Fold, retrain on full data
+            print(f"  Retraining {name} on full data...")
             model.fit(X, y)
             
         print("  Training Meta-Learner...")
