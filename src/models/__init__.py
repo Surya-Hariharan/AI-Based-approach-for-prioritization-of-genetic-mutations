@@ -1,6 +1,11 @@
-from src.models.baseline import LogisticRegression
-from src.models.mlp import MLP
+"""Machine Learning Models for Genetic Mutation Classification"""
+
+from .baseline import LogisticRegression
+from .mlp import MLP
+
+# Optional imports
 try:
-    from src.models.gnn import VariantGNN
+    from .gnn import VariantGNN
+    __all__ = ['LogisticRegression', 'MLP', 'VariantGNN']
 except ImportError:
-    pass
+    __all__ = ['LogisticRegression', 'MLP']
