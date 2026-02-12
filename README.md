@@ -1,25 +1,155 @@
-# AI-Based Genetic Mutation Prioritization
+# AI-Based Genetic Mutation Prioritization  
+**Machine Learning Platform for Pathogenic Variant Classification**  
+*Research-Grade Pipeline with Production-Ready Web Interface*
 
-## Abstract
-
-This project implements an AI-driven approach for prioritizing genetic mutations, specifically focusing on distinguishing pathogenic variants from benign ones. It leverages deep learning models (MLP), ensemble methods (stacking), uncertainty quantification (MC Dropout, Bayesian ranking), and gene-level aggregation to achieve robust and interpretable predictions.
-
----
-
-## 🎯 Key Features
-
-- **Deep Learning Models**: MLP with configurable architecture, dropout, and batch normalization
-- **Baseline Models**: Logistic regression for performance comparison
-- **Ensemble Learning**: Stacking with multiple base learners and meta-learner
-- **Uncertainty Quantification**: MC Dropout for epistemic uncertainty estimation
-- **Bayesian Ranking**: Confidence-aware variant prioritization with credible intervals
-- **Gene-Level Aggregation**: Variant-to-gene score aggregation for biological interpretation
-- **Reproducibility**: Centralized seed management and deterministic mode
-- **Config-Driven**: Single YAML configuration file controls all experiments
+![Python](https://img.shields.io/badge/Python-3.8+-blue)
+![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-red)
+![Flask](https://img.shields.io/badge/Flask-2.0+-green)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+![Jupyter](https://img.shields.io/badge/Jupyter-Notebooks-orange)
+![Machine Learning](https://img.shields.io/badge/ML-Production%20Ready-success)
 
 ---
 
-## 📁 Project Structure
+## 🧬 Problem Statement
+
+Develop an AI-based system to **prioritize genetic mutations** and **distinguish pathogenic variants from benign ones** in clinical genomics applications:
+
+- 🔬 **Variant Classification**: Binary prediction of pathogenic vs benign mutations
+- 📊 **Uncertainty Quantification**: Confidence scores for clinical decision making
+- 🧬 **Gene-Level Ranking**: Aggregated scores for identifying high-risk genes
+- ⚙️ **Clinical Integration**: Production-ready API for healthcare systems
+- 📈 **Research Platform**: Modular pipeline for genomics research
+
+**Clinical Impact**: Enable precision medicine by accurately identifying disease-causing genetic variants from large-scale genomic data.
+
+---
+
+## 💡 Solution Overview
+
+**AI-Based Genetic Mutation Prioritization** is a comprehensive machine learning platform that combines multiple AI approaches for robust variant classification:
+
+- **Multi-Model Architecture**: MLP, ensemble stacking, and baseline models
+- **Uncertainty Estimation**: MC Dropout and Bayesian ranking for confidence assessment
+- **Research Pipeline**: End-to-end notebooks from data processing to gene ranking
+- **Production Interface**: Flask web application with RESTful API
+- **Clinical-Ready**: Reproducible, traceable, and interpretable predictions
+
+**Target Applications:**  
+- 🏥 Clinical diagnostics and genetic counseling
+- 🔬 Research genomics and variant discovery
+- 💊 Precision medicine and drug development
+- 📋 Population health and genetic screening
+
+---
+
+## ⚙️ Key Features
+
+### Core ML Capabilities
+- 🧠 **Deep Learning Models** - MLP with configurable architecture and dropout
+- 📈 **Ensemble Methods** - Stacking with multiple base learners
+- 🎯 **Baseline Models** - Logistic regression for performance comparison
+- 🔮 **Uncertainty Quantification** - MC Dropout epistemic uncertainty estimation
+- 📊 **Bayesian Ranking** - Confidence-aware prioritization with credible intervals
+- 🧬 **Gene-Level Aggregation** - Variant-to-gene score aggregation
+
+### Production Features
+- 🌐 **Web Application** - Modern Flask interface with real-time predictions
+- 📤 **Batch Processing** - CSV file upload for multiple variant analysis
+- 🔌 **RESTful API** - Programmatic access for system integration
+- 📱 **Responsive Design** - Mobile-friendly interface with drag & drop
+- ⚡ **Real-time Results** - Instant predictions with confidence visualization
+- 🎯 **Model Selection** - Choose between MLP, baseline, or ensemble models
+
+### Research Features
+- 🔄 **Reproducible Pipeline** - Centralized seed management and deterministic mode
+- ⚙️ **Config-Driven** - Single YAML configuration file controls all experiments
+- 📓 **Jupyter Notebooks** - Complete workflow from data to deployment
+- 📋 **Comprehensive Evaluation** - ROC-AUC, PR-AUC, calibration analysis
+- 🎨 **Rich Visualizations** - Publication-ready plots and metrics
+- 📊 **Performance Tracking** - Detailed logging and checkpoint management
+
+---
+
+## 🏗 System Architecture
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                   Web Interface                         │
+│         (Flask App - Interactive Predictions)           │
+│  • File Upload (CSV/VCF) • Model Selection             │
+│  • Real-time Results    • Confidence Visualization      │
+└──────────────────────┬──────────────────────────────────┘
+                       │ HTTP/REST API
+                       ↓
+┌─────────────────────────────────────────────────────────┐
+│                   Flask Backend                         │
+│  • Model Loading & Caching                              │
+│  • Input Validation & Preprocessing                     │
+│  • Error Handling & logging                             │
+└──────────────────────┬──────────────────────────────────┘
+                       │
+        ┌──────────────┴──────────────┐
+        │                             │
+        ↓                             ↓
+┌──────────────┐              ┌──────────────┐
+│   Data       │              │   Model      │
+│ Processing   │              │  Inference   │
+└──────┬───────┘              └──────┬───────┘
+       │                             │
+       ↓                             ↓
+┌──────────────┐              ┌──────────────────┐
+│ Feature      │              │  Model Zoo       │
+│ Engineering  │              │  • MLP (PyTorch) │
+│ Pipeline     │              │  • Baseline      │
+└──────┬───────┘              │  • Ensemble      │
+       │                      └──────┬───────────┘
+       ↓                             │
+┌──────────────────────────────────────────────┐
+│           Research Pipeline                  │
+│  • Data Lifecycle (RAW → INTERIM → PROC)     │
+│  • Jupyter Notebooks (00-06)                 │
+│  • Config Management (YAML)                  │
+│  • Reproducible Training                     │
+└──────────────────┬───────────────────────────┘
+                   │
+                   ↓
+┌──────────────────────────────────────────────┐
+│          Model Training & Evaluation         │
+│  • Cross-validation • Hyperparameter Tuning  │
+│  • Uncertainty Estimation • Calibration      │
+│  • Performance Metrics • Visualization       │
+└──────────────────┬───────────────────────────┘
+                   │
+                   ↓
+┌──────────────────────────────────────────────┐
+│            Model Artifacts                   │
+│  • Trained Models (.pth, .joblib)            │
+│  • Preprocessors • Performance Reports        │
+│  • Gene Rankings • Uncertainty Estimates     │
+└──────────────────────────────────────────────┘
+```
+
+---
+
+## 🖥 Technology Stack
+
+| Component | Technology | Purpose |
+|-----------|-----------|---------|
+| **Web Framework** | Flask 2.0+ | Production API with auto-documentation |
+| **Deep Learning** | PyTorch 2.0+ | Neural network training and inference |
+| **Machine Learning** | scikit-learn | Ensemble methods and baseline models |
+| **Data Processing** | pandas, NumPy | Feature engineering and data manipulation |
+| **Visualization** | Matplotlib, Seaborn | Performance analysis and reporting |
+| **Configuration** | YAML | Centralized experiment management |
+| **Notebooks** | Jupyter | Interactive research and development |
+| **Serialization** | joblib | Model persistence and loading |
+| **Frontend** | HTML5, CSS3, JavaScript | Modern responsive web interface |
+| **Deployment** | Docker (ready) | Containerization and scaling |
+
+---
+
+## 📂 Project Structure
 
 ```
 AI-Based-approach-for-prioritization-of-genetic-mutations/
