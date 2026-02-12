@@ -9,8 +9,12 @@ try:
     import src.evaluation.eval_metrics as m
     print(f"File: {m.__file__}")
 
-    from src.evaluation.plotting import Plotter
-    print("SUCCESS: Imported Plotter")
+    from sklearn.metrics import roc_curve
+    print("SUCCESS: Imported roc_curve")
+    from sklearn.metrics import precision_recall_curve
+    print("SUCCESS: Imported precision_recall_curve")
+    from sklearn.metrics import calibration_curve
+    print("SUCCESS: Imported calibration_curve")
 
 except ImportError as e:
     print(f"FAILURE: {e}")
