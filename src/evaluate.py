@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 import joblib
 
-from src.config.data_config import Config
+from src.config.loader import Config
 from src.utils import get_data_loaders
 from src.models import LogisticRegression, MLP
 from src.evaluation.eval_metrics import calculate_metrics, calculate_top_k_recall, confusion_matrix_stats, brier_score, expected_calibration_error

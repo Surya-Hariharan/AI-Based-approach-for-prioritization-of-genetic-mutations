@@ -9,7 +9,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
 import numpy as np
 import pandas as pd
 from src.ensemble.stacking import StackingEnsemble
-from src.config.data_config import Config
+from src.config.loader import Config
 
 def test_stacking_ensemble():
     print("Testing StackingEnsemble...")

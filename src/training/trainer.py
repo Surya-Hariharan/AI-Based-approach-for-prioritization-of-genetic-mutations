@@ -7,7 +7,7 @@ import os
 import json
 import time
 from typing import Dict, Any, Optional, Tuple
-from src.config.data_config import Config
+from src.config.loader import Config
 from src.evaluation.eval_metrics import calculate_metrics
 
 class Trainer:

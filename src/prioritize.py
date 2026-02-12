@@ -4,7 +4,7 @@ import numpy as np
 import torch
 import joblib
 
-from src.config.data_config import Config
+from src.config.loader import Config
 from src.models import LogisticRegression, MLP
 from src.ensemble.stacking import StackingEnsemble
 from src.uncertainty.mc_dropout import MCDropoutEstimator

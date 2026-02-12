@@ -5,7 +5,7 @@ from typing import Tuple, Dict, Any
 from sklearn.model_selection import train_test_split
 from src.utils.dataset import MutationDataset
 from src.utils.preprocessing import Preprocessor
-from src.config.data_config import Config
+from src.config.loader import Config
 import os
 
 def get_data_loaders(config: Config) -> Tuple[DataLoader, DataLoader, DataLoader, int]:

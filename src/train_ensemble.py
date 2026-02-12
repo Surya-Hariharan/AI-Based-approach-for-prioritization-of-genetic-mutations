@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 import os
 
-from src.config.data_config import Config
+from src.config.loader import Config
 from src.utils.data_loader import get_data_loaders
 from src.ensemble.stacking import StackingEnsemble
 
