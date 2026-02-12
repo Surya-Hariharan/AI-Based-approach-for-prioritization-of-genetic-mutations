@@ -18,12 +18,13 @@ def get_data_loaders(config: Config) -> Tuple[DataLoader, DataLoader, DataLoader
     Returns:
         train_loader, val_loader, test_loader, input_dim
     """
-    # Load data
-    df = pd.read_csv(config.data['processed_path'])
+    # Load processed data
+    processed_path = config.data['processed_data_path']
+    df = pd.read_csv(processed_path)
     
     # Handle missing values and scaling
-    target_col = config.target_col
-    features = config.numerical_features + config.categorical_features
+    target_col = config.data['target_col']
+    features = config.data['numerical_features'] + config.data['categorical_features']
     
     X = df[features]
     y = df[target_col] if target_col in df.columns else None
@@ -43,15 +44,15 @@ def get_data_loaders(config: Config) -> Tuple[DataLoader, DataLoader, DataLoader
     # Preprocessing
     # Fit on training data only
     preprocessor = Preprocessor(
-        numerical_features=config.numerical_features,
-        categorical_features=config.categorical_features
+        numerical_features=config.data['numerical_features'],
+        categorical_features=config.data['categorical_features']
     )
     
     # Fit transform training data
     # Note: Preprocessor expects a DataFrame with both num & cat columns
     # We fit the internal transformer on X_train
-    preprocessor.numeric_transformer.fit(X_train[config.numerical_features])
-    preprocessor.categorical_transformer.fit(X_train[config.categorical_features])
+    preprocessor.numeric_transformer.fit(X_train[config.data['numerical_features']])
+    preprocessor.categorical_transformer.fit(X_train[config.data['categorical_features']])
 
     # Transform all splits
     # Helper to transform
@@ -63,8 +64,8 @@ def get_data_loaders(config: Config) -> Tuple[DataLoader, DataLoader, DataLoader
     
     # Re-initialize preprocessor to use the unified fit
     preprocessor = Preprocessor(
-        numerical_features=config.numerical_features,
-        categorical_features=config.categorical_features
+        numerical_features=config.data['numerical_features'],
+        categorical_features=config.data['categorical_features']
     )
     
     # Helper function to get transformed dataframe
@@ -73,7 +74,7 @@ def get_data_loaders(config: Config) -> Tuple[DataLoader, DataLoader, DataLoader
     X_test_processed = preprocessor.transform(X_test)
     
     # Save preprocessor for inference later
-    preprocessor_path = config.data.get('processed_preprocessor_path', 'data/processed/preprocessor.joblib')
+    preprocessor_path = config.data.get('preprocessor_path', 'data/processed/preprocessor.joblib')
     os.makedirs(os.path.dirname(preprocessor_path), exist_ok=True)
     preprocessor.save(preprocessor_path)
 

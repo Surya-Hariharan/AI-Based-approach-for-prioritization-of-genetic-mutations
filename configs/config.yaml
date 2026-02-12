@@ -1,7 +1,17 @@
 data:
-  raw_path: "data/raw/feature_matrix.csv"
-  processed_path: "data/processed/feature_matrix.csv"
-  processed_preprocessor_path: "data/processed/preprocessor.joblib"
+  # RAW: Original untouched datasets
+  raw_data_path: "data/raw/mutation_impact_dataset.csv"
+  raw_labels_path: "data/raw/labels.csv"
+  raw_vcf_path: "data/raw/clinvar_input.vcf"
+  
+  # INTERIM: Derived but not fully processed features
+  interim_data_path: "data/interim/feature_matrix_raw.csv"
+  
+  # PROCESSED: Final training-ready dataset
+  processed_data_path: "data/processed/feature_matrix_processed.csv"
+  preprocessor_path: "data/processed/preprocessor.joblib"
+  
+  # Feature definitions
   numerical_features:
     - "AF"
     - "CADD_PHRED"
@@ -10,6 +20,8 @@ data:
     - "variant_type"
     - "impact_category"
   target_col: "pathogenicity_label"
+  
+  # Data split parameters
   test_size: 0.2
   val_size: 0.1
   random_seed: 42
