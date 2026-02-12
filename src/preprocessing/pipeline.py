@@ -14,6 +14,7 @@ import numpy as np
 from pathlib import Path
 from typing import Tuple
 import logging
+import os
 
 from src.preprocessing.preprocessing import Preprocessor
 from src.preprocessing.validation import DataValidator, validate_and_save
@@ -25,6 +26,23 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
+
+
+def get_project_root() -> Path:
+    """
+    Get the project root directory.
+    
+    Returns:
+        Path to project root (where configs/, data/, src/ directories exist)
+    """
+    # Start from this file's location
+    current_file = Path(__file__).resolve()
+    
+    # Go up to src/, then to project root
+    project_root = current_file.parent.parent.parent
+    
+    # Ensure it's absolute
+    return project_root.resolve()
 
 
 class DataPipeline:
@@ -40,17 +58,25 @@ class DataPipeline:
             config: Configuration object containing paths and feature definitions
         """
         self.config = config
-        self.raw_data_path = Path(config.data['raw_data_path'])
-        self.interim_data_path = Path(config.data['interim_data_path'])
-        self.processed_data_path = Path(config.data['processed_data_path'])
-        self.preprocessor_path = Path(config.data['preprocessor_path'])
+        
+        # Get project root for resolving relative paths
+        self.project_root = get_project_root()
+        
+        # Resolve paths relative to project root and ensure they're absolute
+        self.raw_data_path = (self.project_root / config.data['raw_data_path']).resolve()
+        self.interim_data_path = (self.project_root / config.data['interim_data_path']).resolve()
+        self.processed_data_path = (self.project_root / config.data['processed_data_path']).resolve()
+        self.preprocessor_path = (self.project_root / config.data['preprocessor_path']).resolve()
         
         self.numerical_features = config.data['numerical_features']
         self.categorical_features = config.data['categorical_features']
         self.target_col = config.data['target_col']
         
         logger.info("Initialized data pipeline")
+        logger.info(f"  PROJECT ROOT: {self.project_root}")
         logger.info(f"  RAW: {self.raw_data_path}")
+        logger.info(f"  RAW (absolute): {self.raw_data_path.absolute()}")
+        logger.info(f"  RAW exists: {self.raw_data_path.exists()}")
         logger.info(f"  INTERIM: {self.interim_data_path}")
         logger.info(f"  PROCESSED: {self.processed_data_path}")
     

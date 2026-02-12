@@ -2,11 +2,20 @@ import pandas as pd
 import torch
 from torch.utils.data import DataLoader, random_split
 from typing import Tuple, Dict, Any
+from pathlib import Path
 from sklearn.model_selection import train_test_split
 from src.preprocessing.dataset import MutationDataset
 from src.preprocessing.preprocessing import Preprocessor
 from src.utils.config import Config
 import os
+
+
+def get_project_root() -> Path:
+    """Get the project root directory."""
+    current_file = Path(__file__).resolve()
+    # Go up from data_loader.py -> preprocessing -> src -> project root
+    return current_file.parent.parent.parent.resolve()
+
 
 def get_data_loaders(config: Config) -> Tuple[DataLoader, DataLoader, DataLoader, int]:
     """
@@ -18,8 +27,10 @@ def get_data_loaders(config: Config) -> Tuple[DataLoader, DataLoader, DataLoader
     Returns:
         train_loader, val_loader, test_loader, input_dim
     """
-    # Load processed data
-    processed_path = config.data['processed_data_path']
+    # Get project root and resolve path
+    project_root = get_project_root()
+    processed_path = (project_root / config.data['processed_data_path']).resolve()
+    
     df = pd.read_csv(processed_path)
     
     # Handle missing values and scaling
@@ -74,9 +85,9 @@ def get_data_loaders(config: Config) -> Tuple[DataLoader, DataLoader, DataLoader
     X_test_processed = preprocessor.transform(X_test)
     
     # Save preprocessor for inference later
-    preprocessor_path = config.data.get('preprocessor_path', 'data/processed/preprocessor.joblib')
-    os.makedirs(os.path.dirname(preprocessor_path), exist_ok=True)
-    preprocessor.save(preprocessor_path)
+    preprocessor_path = (project_root / config.data.get('preprocessor_path', 'data/processed/preprocessor.joblib')).resolve()
+    preprocessor_path.parent.mkdir(parents=True, exist_ok=True)
+    preprocessor.save(str(preprocessor_path))
 
     # Create Datasets
     train_dataset = MutationDataset(X_train_processed, y_train)

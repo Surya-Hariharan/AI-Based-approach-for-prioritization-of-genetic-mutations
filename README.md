@@ -27,11 +27,19 @@ AI-Based-approach-for-prioritization-of-genetic-mutations/
 ├── configs/                      # Configuration files
 │   └── config.yaml              # Single source of truth for all parameters
 │
-├── data/                        # Data storage
-│   ├── raw/                     # Original datasets (VCF, CSV)
-│   └── processed/               # Preprocessed features and labels
+├── data/                        # Data storage (strict lifecycle: RAW → INTERIM → PROCESSED)
+│   ├── raw/                     # ❌ READ-ONLY: Original datasets (VCF, CSV)
+│   │   ├── clinvar_input.vcf
+│   │   ├── mutation_impact_dataset.csv
+│   │   └── labels.csv
+│   ├── interim/                 # ⚙️ DERIVED: Engineered features (not preprocessed)
+│   │   └── feature_matrix_raw.csv
+│   └── processed/               # ✅ TRAINING-READY: Preprocessed features
+│       ├── feature_matrix_processed.csv
+│       └── preprocessor.joblib
 │
 ├── notebooks/                   # Experimentation workflows ⭐ START HERE!
+│   ├── 00_data_pipeline.ipynb           # ⚠️ RUN FIRST: RAW → INTERIM → PROCESSED
 │   ├── 01_data_exploration.ipynb         # EDA and feature analysis
 │   ├── 02_baseline_training.ipynb        # Logistic regression baseline
 │   ├── 03_mlp_training.ipynb             # Deep learning training
@@ -48,7 +56,9 @@ AI-Based-approach-for-prioritization-of-genetic-mutations/
 │   ├── preprocessing/           # Data processing
 │   │   ├── data_loader.py      # DataLoader creation
 │   │   ├── preprocessing.py    # Feature engineering
-│   │   └── dataset.py          # PyTorch Dataset
+│   │   ├── dataset.py          # PyTorch Dataset
+│   │   ├── validation.py       # Data validation utilities
+│   │   └── pipeline.py         # RAW → INTERIM → PROCESSED pipeline
 │   │
 │   ├── evaluation/              # Metrics and visualization
 │   │   ├── metrics.py          # ROC-AUC, PR-AUC, F1
@@ -123,6 +133,7 @@ jupyter notebook
 ```
 
 **Recommended execution order:**
+0. [00_data_pipeline.ipynb](notebooks/00_data_pipeline.ipynb) - **⚠️ RUN FIRST!** Executes RAW → INTERIM → PROCESSED pipeline
 1. [01_data_exploration.ipynb](notebooks/01_data_exploration.ipynb) - Understand your data
 2. [02_baseline_training.ipynb](notebooks/02_baseline_training.ipynb) - Establish baseline
 3. [03_mlp_training.ipynb](notebooks/03_mlp_training.ipynb) - Train deep learning model
@@ -130,7 +141,26 @@ jupyter notebook
 5. [05_uncertainty_analysis.ipynb](notebooks/05_uncertainty_analysis.ipynb) - Quantify uncertainty
 6. [06_gene_level_ranking.ipynb](notebooks/06_gene_level_ranking.ipynb) - Generate gene rankings
 
-### 3. Configuration
+### 3. Data Lifecycle
+
+This project enforces strict data separation: **RAW → INTERIM → PROCESSED**
+
+```
+data/
+├── raw/          # ❌ READ-ONLY: Original untouched data
+├── interim/      # ⚙️ DERIVED: Engineered features (not scaled)
+└── processed/    # ✅ TRAINING-READY: Final processed data
+```
+
+**Key Rules**:
+- ❌ **NEVER WRITE** to `data/raw/` after initial placement
+- ✅ Run `00_data_pipeline.ipynb` to process data
+- ✅ All training loads from `data/processed/`
+- ✅ Validation enforced automatically
+
+See [DATA_LIFECYCLE.md](DATA_LIFECYCLE.md) for complete documentation.
+
+### 4. Configuration
 
 Edit [configs/config.yaml](configs/config.yaml) to customize:
 - Data paths
@@ -214,6 +244,7 @@ from src.uncertainty import MCDropoutEstimator, BayesianRanker
 
 ## 📚 Documentation
 
+- **[DATA_LIFECYCLE.md](DATA_LIFECYCLE.md)**: Data pipeline and lifecycle management
 - **[REFACTORING_SUMMARY.md](REFACTORING_SUMMARY.md)**: Comprehensive architectural documentation
 - **[QUICK_REFERENCE.md](QUICK_REFERENCE.md)**: Quick start guide and API reference
 
