@@ -65,3 +65,26 @@ def confusion_matrix_stats(y_true: np.ndarray, y_pred_probs: np.ndarray, thresho
     y_pred_binary = (y_pred_probs >= threshold).astype(int)
     tn, fp, fn, tp = confusion_matrix(y_true, y_pred_binary).ravel()
     return {"TN": int(tn), "FP": int(fp), "FN": int(fn), "TP": int(tp)}
+
+def brier_score(y_true: np.ndarray, y_pred_probs: np.ndarray) -> float:
+    return float(np.mean((y_pred_probs - y_true) ** 2))
+
+def expected_calibration_error(y_true: np.ndarray, y_pred_probs: np.ndarray, n_bins: int = 10) -> float:
+    """
+    Computes Expected Calibration Error (ECE).
+    """
+    bin_boundaries = np.linspace(0, 1, n_bins + 1)
+    bin_lowers = bin_boundaries[:-1]
+    bin_uppers = bin_boundaries[1:]
+    
+    ece = 0.0
+    for bin_lower, bin_upper in zip(bin_lowers, bin_uppers):
+        in_bin = (y_pred_probs > bin_lower) & (y_pred_probs <= bin_upper)
+        prop_in_bin = np.mean(in_bin)
+        
+        if prop_in_bin > 0:
+            accuracy_in_bin = np.mean(y_true[in_bin])
+            avg_confidence_in_bin = np.mean(y_pred_probs[in_bin])
+            ece += np.abs(avg_confidence_in_bin - accuracy_in_bin) * prop_in_bin
+            
+    return float(ece)
