@@ -988,7 +988,22 @@ git push origin feature/amazing-new-feature
 
 ---
 
-## 📞 Support & Contact
+## 📞 Contact & Support
+
+### 👨‍💻 Main Developer
+**Surya Hariharan**
+
+- 🐙 **GitHub**: [@Surya-Hariharan](https://github.com/Surya-Hariharan)
+- 💼 **LinkedIn**: [Surya HA](https://linkedin.com/in/surya-ha)
+- 📧 **Email**: [suryahariharan2006@gmail.com](mailto:suryahariharan2006@gmail.com)
+
+### 🔗 Project Links
+- 🌐 **Repository**: [AI-Based Genetic Mutation Prioritization](https://github.com/Surya-Hariharan/AI-Based-approach-for-prioritization-of-genetic-mutations)
+- 📚 **Documentation**: Complete guides and API documentation
+- 🐛 **Issues**: [Report Bugs](https://github.com/Surya-Hariharan/AI-Based-approach-for-prioritization-of-genetic-mutations/issues)
+- 💬 **Discussions**: [Community Forum](https://github.com/Surya-Hariharan/AI-Based-approach-for-prioritization-of-genetic-mutations/discussions)
+
+---
 
 ### 🆘 Getting Help
 
@@ -996,7 +1011,7 @@ git push origin feature/amazing-new-feature
 - ❓ **Setup Problems**: Check [QUICK_START.md](QUICK_START.md) or [WEB_APP_GUIDE.md](WEB_APP_GUIDE.md)
 - 🐛 **Bug Reports**: [GitHub Issues](https://github.com/Surya-Hariharan/AI-Based-approach-for-prioritization-of-genetic-mutations/issues)
 - 💡 **Feature Requests**: Open an issue with detailed use case
-- 🤝 **Collaboration**: Contact via GitHub or open a discussion
+- 🤝 **Collaboration**: Contact via GitHub or email
 
 **Documentation:**
 - 📖 **Complete Guide**: This README
