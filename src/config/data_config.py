@@ -37,6 +37,22 @@ class Config:
     @property
     def interpretation(self) -> Dict[str, Any]:
         return self.config.get('interpretation', {})
+
+    @property
+    def ensemble(self) -> Dict[str, Any]:
+        return self.config.get('ensemble', {})
+
+    @property
+    def uncertainty(self) -> Dict[str, Any]:
+        return self.config.get('uncertainty', {})
+
+    @property
+    def graph(self) -> Dict[str, Any]:
+        return self.config.get('graph', {})
+
+    @property
+    def aggregation(self) -> Dict[str, Any]:
+        return self.config.get('aggregation', {})
     
     @property
     def numerical_features(self) -> List[str]:

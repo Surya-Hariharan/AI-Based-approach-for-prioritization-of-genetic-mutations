@@ -35,6 +35,24 @@ evaluation:
   threshold: 0.5
   output_dir: "tests/reports/results"
 
-interpretation:
-  background_samples: 10
-  output_dir: "tests/reports/figures"
+ensemble:
+  enabled: true
+  n_folds: 3
+  meta_learner: "logistic_regression"
+  base_models:
+    - type: "mlp"
+    - type: "xgboost"
+      params:
+        n_estimators: 10
+        max_depth: 2
+
+uncertainty:
+  mc_dropout_samples: 5
+
+graph:
+  enabled: false
+  hidden_layers: [16, 8]
+  dropout: 0.1
+
+aggregation:
+  method: "bayesian"
