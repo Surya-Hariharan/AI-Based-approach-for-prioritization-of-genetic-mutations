@@ -1,6 +1,11 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn.metrics import roc_curve, precision_recall_curve, calibration_curve
+try:
+    from sklearn.metrics import roc_curve, precision_recall_curve, calibration_curve
+except ImportError:
+    from sklearn.metrics import roc_curve, precision_recall_curve
+    calibration_curve = None
+
 import numpy as np
 import os
 from typing import List, Dict

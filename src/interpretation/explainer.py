@@ -1,4 +1,8 @@
-import shap
+try:
+    import shap
+except ImportError:
+    shap = None
+
 import torch
 import numpy as np
 import pandas as pd
@@ -16,9 +20,13 @@ class ModelInterpreter:
         self.output_dir = output_dir
         os.makedirs(self.output_dir, exist_ok=True)
         
-        # Use KernelExplainer for broad compatibility (or DeepExplainer for gradients)
-        # Using a small background sample for speed
-        self.explainer = shap.KernelExplainer(self._predict_wrapper, background_data.cpu().numpy())
+        if shap is not None:
+             # Use KernelExplainer for broad compatibility (or DeepExplainer for gradients)
+             # Using a small background sample for speed
+             self.explainer = shap.KernelExplainer(self._predict_wrapper, background_data.cpu().numpy())
+        else:
+             print("Warning: SHAP library not found. Interpretation skipped.")
+             self.explainer = None
 
     def _predict_wrapper(self, x):
         tensor_x = torch.tensor(x, dtype=torch.float32)
@@ -30,14 +38,12 @@ class ModelInterpreter:
         """
         Generates and saves summary plot.
         """
+        if self.explainer is None:
+            return None
+
         shap_values = self.explainer.shap_values(X_evaluate)
         
         # For binary classification, shap_values is list, take index 0 (or correct class)
-        # Verify shape: if model output is 1D (logit), shap_values might be array.
-        # KernelExplainer typically returns a list for classification output even if single output node?
-        # Let's check based on wrapper output (sigmoid -> 1D array per sample).
-        # Wrapper returns (N, 1) or (N,).
-        
         if isinstance(shap_values, list):
             vals = shap_values[0]
         else:
