@@ -1,0 +1,31 @@
+data:
+  raw_path: "data/raw/clinvar.vcf.gz"
+  processed_path: "tests/data/feature_matrix.csv"
+  numerical_features:
+    - "AF"
+    - "CADD_PHRED"
+    - "conservation_score"
+  categorical_features:
+    - "variant_type"
+    - "impact_category"
+  target_col: "pathogenicity_label"
+  test_size: 0.2
+  val_size: 0.1
+  random_seed: 42
+
+model:
+  type: "mlp"
+  mlp:
+    hidden_layers: [16, 8]
+    dropout: 0.1
+    activation: "relu"
+  baseline:
+    lambda_l2: 0.01
+
+training:
+  batch_size: 8
+  epochs: 2
+  learning_rate: 0.01
+  early_stopping_patience: 2
+  checkpoint_dir: "tests/models/checkpoints"
+  log_dir: "tests/results/logs"
