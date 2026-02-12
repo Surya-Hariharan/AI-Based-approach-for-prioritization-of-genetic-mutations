@@ -9,15 +9,15 @@ import numpy as np
 import sys
 
 # Add project root to path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
 
 from src.config.data_config import Config
 from src.utils.data_loader import get_data_loaders
 from src.models.baseline import LogisticRegression
 from src.models.mlp import MLP
 from src.evaluation.eval_metrics import calculate_metrics, calculate_top_k_recall, confusion_matrix_stats
-from src.evaluation.plotting import Plotter
-from src.evaluation.report import EvaluationReport
+# from src.evaluation.eval_plotting import Plotter
+from src.evaluation.eval_report import EvaluationReport
 from src.evaluation.ranker import Ranker
 from src.evaluation.biological import BiologicalEvaluator
 from src.interpretation.explainer import ModelInterpreter
