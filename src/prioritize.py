@@ -1,14 +1,16 @@
+import os
+# Set environment variable to allow duplicate OpenMP libraries
+os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
+
 import argparse
 import torch
 import pandas as pd
 import numpy as np
-import os
 import sys
 import joblib
-os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
 # Add project root to path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
 
 from src.config.data_config import Config
 from src.models.baseline import LogisticRegression
@@ -27,22 +29,12 @@ def main():
 
     config = Config(args.config)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-    # Load Model
-    # Note: We need input_dim. For inference, we determine it from preprocessor/data.
-    # Alternatively, store input_dim in config or model metadata.
-    # Here we'll load the model structure based on config, but input_dim is tricky.
-    # Let's verify standard dimensionality from config features + OHE?
-    # Safer: Load preprocessor first, transform dummy row to get dim.
     
     # Load Preprocessor
     if not os.path.exists(args.preprocessor_path):
         print(f"Error: Preprocessor not found at {args.preprocessor_path}")
         return
     
-    # We use joblib directly as Preprocessor class wrapper might need instantiation with args first
-    # Or we can use the load method if we instantiate.
-    # Let's instantiate wrapper.
     preprocessor = Preprocessor(config.numerical_features, config.categorical_features)
     preprocessor.load(args.preprocessor_path)
     
