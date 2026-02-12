@@ -1,15 +1,8 @@
-import os
-# Set environment variable to allow duplicate OpenMP libraries
-os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
-
 import argparse
-import sys
 import torch
 import pandas as pd
 import numpy as np
-
-# Add project root to path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
+import os
 
 from src.config.data_config import Config
 from src.utils.data_loader import get_data_loaders

@@ -73,8 +73,9 @@ def get_data_loaders(config: Config) -> Tuple[DataLoader, DataLoader, DataLoader
     X_test_processed = preprocessor.transform(X_test)
     
     # Save preprocessor for inference later
-    os.makedirs(os.path.dirname("models/preprocessor.joblib"), exist_ok=True)
-    preprocessor.save("models/preprocessor.joblib")
+    preprocessor_path = config.data.get('processed_preprocessor_path', 'data/processed/preprocessor.joblib')
+    os.makedirs(os.path.dirname(preprocessor_path), exist_ok=True)
+    preprocessor.save(preprocessor_path)
 
     # Create Datasets
     train_dataset = MutationDataset(X_train_processed, y_train)

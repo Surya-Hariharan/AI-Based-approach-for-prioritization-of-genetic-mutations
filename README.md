@@ -1,45 +1,99 @@
-# AI-Based Approach for Prioritization of Genetic Mutations
+# AI-Based Genetic Mutation Prioritization
 
-This project aims to prioritize genetic mutations using AI models.
+## Abstract
+
+This project implements an AI-driven approach for prioritizing genetic mutations, specifically focusing on distinguishing pathogenic variants from benign ones. It leverages tabular data (Variant Annotation), Graph Neural Networks (GNNs) for gene interaction modeling, and Ensemble Learning to achieve robust predictions reliability.
+
+## Architecture
+
+The system consists of the following modules:
+
+1. **Data Processing**: Standardization and feature engineering of genomic data.
+2. **Models**:
+    - **Baselines**: Logistic Regression, MLP.
+    - **Ensemble**: Stacking of MLP, XGBoost, and LightGBM.
+    - **Graph**: GNNs (GCN/GraphSAGE) for variant-gene interaction.
+3. **Uncertainty Estimation**: MC Dropout for epistemic uncertainty quantification.
+4. **Ranking**: Bayesian ranking based on prediction confidence intervals.
+5. **Aggregation**: Gene-level scoring (mean, max, Bayesian aggregation).
 
 ## Project Structure
 
 ```
-project-root
+project-root/
 │
-├── src/                  # Source code for the project
-│   ├── models/           # Model definitions
-│   ├── training/         # Training statistics and logic
-│   ├── evaluation/       # Evaluation scripts
-│   ├── utils/            # Utility functions
-│   └── config/           # Configuration files
+├── src/                      # Source code
+│   ├── config/               # Configuration files
+│   ├── models/               # PyTorch model definitions
+│   ├── training/             # Training logic
+│   ├── evaluation/           # Metrics and reporting
+│   ├── ensemble/             # Stacking ensemble
+│   ├── uncertainty/          # MC Dropout implementation
+│   ├── graph/                # Graph construction and GNNs
+│   ├── aggregation/          # Gene scoring
+│   ├── ranking/              # Bayesian ranking
+│   └── utils/                # Data loaders and helpers
 │
 ├── data/
-│   ├── raw/              # Raw data files (ignored by git)
-│   ├── processed/        # Processed data
-│   └── README.md         # Data documentation
+│   ├── raw/                  # Input data (not tracked by git)
+│   └── processed/            # Processed features and artifacts
+│
+├── reports/                  # Generated results and figures
+├── tests/                    # Unit tests
+└── README.md
 ```
 
-## Getting Started
+## Installation
 
-### Prerequisites
+1. Clone the repository:
 
-- Python 3.8+
-- Recommended to use a virtual environment.
+    ```bash
+    git clone <repo_url>
+    cd <repo_name>
+    ```
 
-### Installation
-
-1. Clone the repository
 2. Install dependencies:
 
-   ```bash
-   pip install -r requirements.txt
-   ```
+    ```bash
+    pip install -r requirements.txt
+    ```
 
 ## Usage
 
-Place your raw data files (`.vcf`, `.csv`) in `data/raw/`.
+### 1. Training
+
+Train a standard MLP model:
+
+```bash
+python src/main.py train --config src/config/config.yaml --model mlp --epochs 50
+```
+
+Train an ensemble model:
+
+```bash
+python src/main.py train-ensemble --config src/config/config.yaml
+```
+
+### 2. Evaluation
+
+Evaluate the trained model with advanced metrics (ECE, Brier Score) and ranking:
+
+```bash
+python src/main.py evaluate --use_ensemble --use_mc_dropout
+```
+
+### 3. prioritization (Inference)
+
+Prioritize mutations in a new dataset:
+
+```bash
+python src/main.py prioritize data/raw/new_variants.csv --output reports/results/prioritized.csv
+```
+
+## Configuration
+
+Hyperparameters and paths are managed in `src/config/config.yaml`.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+[License Name]

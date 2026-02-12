@@ -1,16 +1,8 @@
-import os
-# Set environment variable to allow duplicate OpenMP libraries
-os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
-
 import argparse
 import pandas as pd
 import numpy as np
 import torch
-import sys
 import joblib
-
-# Add project root to path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
 
 from src.config.data_config import Config
 from src.models.baseline import LogisticRegression

@@ -1,16 +1,7 @@
-import os
-import sys
-
-# Set environment variable to allow duplicate OpenMP libraries
-os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
-
 import argparse
 import torch
 import torch.nn as nn
 import torch.optim as optim
-
-# Add project root to path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 
 from src.config.data_config import Config
 from src.utils.data_loader import get_data_loaders

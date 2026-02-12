@@ -1,6 +1,7 @@
 data:
-  raw_path: "data/raw/clinvar.vcf.gz"
+  raw_path: "data/raw/feature_matrix.csv"
   processed_path: "data/processed/feature_matrix.csv"
+  processed_preprocessor_path: "data/processed/preprocessor.joblib"
   numerical_features:
     - "AF"
     - "CADD_PHRED"
@@ -27,8 +28,8 @@ training:
   epochs: 50
   learning_rate: 0.001
   early_stopping_patience: 5
-  checkpoint_dir: "models/checkpoints"
-  log_dir: "results/logs"
+  checkpoint_dir: "reports/results/checkpoints"
+  log_dir: "reports/results/logs"
 
 evaluation:
   top_k: [10, 50, 100]
