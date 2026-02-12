@@ -1,6 +1,6 @@
 import torch
 import numpy as np
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, confusion_matrix
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, confusion_matrix, roc_curve
 from typing import Dict, Union, List
 
 def calculate_metrics(y_true: Union[np.ndarray, torch.Tensor], y_pred_probs: Union[np.ndarray, torch.Tensor], threshold: float = 0.5) -> Dict[str, float]:
