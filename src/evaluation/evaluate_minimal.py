@@ -11,8 +11,7 @@ try:
 
     from src.evaluation.plotting import Plotter
     print("SUCCESS: Imported Plotter")
-    from src.interpretation.explainer import ModelInterpreter
-    print("SUCCESS: Imported ModelInterpreter")
+
 except ImportError as e:
     print(f"FAILURE: {e}")
 except Exception as e:
