@@ -3,9 +3,9 @@ import torch
 from torch.utils.data import DataLoader, random_split
 from typing import Tuple, Dict, Any
 from sklearn.model_selection import train_test_split
-from src.utils.dataset import MutationDataset
-from src.utils.preprocessing import Preprocessor
-from src.config.loader import Config
+from src.preprocessing.dataset import MutationDataset
+from src.preprocessing.preprocessing import Preprocessor
+from src.utils.config import Config
 import os
 
 def get_data_loaders(config: Config) -> Tuple[DataLoader, DataLoader, DataLoader, int]:
