@@ -6,6 +6,7 @@ from sklearn.model_selection import train_test_split
 from src.utils.dataset import MutationDataset
 from src.utils.preprocessing import Preprocessor
 from src.config.data_config import Config
+import os
 
 def get_data_loaders(config: Config) -> Tuple[DataLoader, DataLoader, DataLoader, int]:
     """
@@ -72,7 +73,8 @@ def get_data_loaders(config: Config) -> Tuple[DataLoader, DataLoader, DataLoader
     X_test_processed = preprocessor.transform(X_test)
     
     # Save preprocessor for inference later
-    # preprocessor.save("models/preprocessor.joblib") # directory might not exist yet
+    os.makedirs(os.path.dirname("models/preprocessor.joblib"), exist_ok=True)
+    preprocessor.save("models/preprocessor.joblib")
 
     # Create Datasets
     train_dataset = MutationDataset(X_train_processed, y_train)

@@ -29,3 +29,12 @@ training:
   early_stopping_patience: 5
   checkpoint_dir: "models/checkpoints"
   log_dir: "results/logs"
+
+evaluation:
+  top_k: [10, 50, 100]
+  threshold: 0.5
+  output_dir: "reports/results"
+
+interpretation:
+  background_samples: 100
+  output_dir: "reports/figures"

@@ -29,6 +29,14 @@ class Config:
     @property
     def training(self) -> Dict[str, Any]:
         return self.config.get('training', {})
+
+    @property
+    def evaluation(self) -> Dict[str, Any]:
+        return self.config.get('evaluation', {})
+
+    @property
+    def interpretation(self) -> Dict[str, Any]:
+        return self.config.get('interpretation', {})
     
     @property
     def numerical_features(self) -> List[str]:
