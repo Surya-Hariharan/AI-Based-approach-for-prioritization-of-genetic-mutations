@@ -15,7 +15,7 @@ from src.config.data_config import Config
 from src.utils.data_loader import get_data_loaders
 from src.models.baseline import LogisticRegression
 from src.models.mlp import MLP
-from src.evaluation.metrics import calculate_metrics, calculate_top_k_recall, confusion_matrix_stats
+from src.evaluation.eval_metrics import calculate_metrics, calculate_top_k_recall, confusion_matrix_stats
 from src.evaluation.plotting import Plotter
 from src.evaluation.report import EvaluationReport
 from src.evaluation.ranker import Ranker
