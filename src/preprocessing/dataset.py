@@ -8,15 +8,22 @@ class MutationDataset(Dataset):
     """
     PyTorch Dataset for Genetic Mutation Prioritization.
     """
-    def __init__(self, features: pd.DataFrame, targets: Optional[pd.Series] = None):
+    def __init__(self, features, targets=None):
         """
         Args:
-            features (pd.DataFrame): Processed feature matrix.
-            targets (pd.Series, optional): Target labels.
+            features: Processed feature matrix (pd.DataFrame or np.ndarray).
+            targets: Target labels (pd.Series or np.ndarray, optional).
         """
-        self.features = torch.tensor(features.values, dtype=torch.float32)
+        # Handle both pandas and numpy inputs
+        if isinstance(features, pd.DataFrame):
+            features = features.values
+        if isinstance(targets, pd.Series):
+            targets = targets.values
+            
+        self.features = torch.tensor(features, dtype=torch.float32)
         if targets is not None:
-            self.targets = torch.tensor(targets.values, dtype=torch.float32).unsqueeze(1)
+            # Keep targets as 1D - DataLoader will handle batching
+            self.targets = torch.tensor(targets, dtype=torch.float32)
         else:
             self.targets = None
 
@@ -25,5 +32,6 @@ class MutationDataset(Dataset):
 
     def __getitem__(self, idx):
         if self.targets is not None:
+            # Return features and target - DataLoader will batch them
             return self.features[idx], self.targets[idx]
         return self.features[idx]
