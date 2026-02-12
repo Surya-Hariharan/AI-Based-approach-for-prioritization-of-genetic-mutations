@@ -5,8 +5,7 @@ import torch
 import joblib
 
 from src.config.data_config import Config
-from src.models.baseline import LogisticRegression
-from src.models.mlp import MLP
+from src.models import LogisticRegression, MLP
 from src.ensemble.stacking import StackingEnsemble
 from src.uncertainty.mc_dropout import MCDropoutEstimator
 from src.ranking.bayesian import BayesianRanker

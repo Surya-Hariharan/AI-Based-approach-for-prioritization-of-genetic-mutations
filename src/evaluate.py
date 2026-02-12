@@ -5,9 +5,8 @@ import numpy as np
 import joblib
 
 from src.config.data_config import Config
-from src.utils.data_loader import get_data_loaders
-from src.models.baseline import LogisticRegression
-from src.models.mlp import MLP
+from src.utils import get_data_loaders
+from src.models import LogisticRegression, MLP
 from src.evaluation.eval_metrics import calculate_metrics, calculate_top_k_recall, confusion_matrix_stats, brier_score, expected_calibration_error
 from src.evaluation.eval_plotting import Plotter
 from src.evaluation.eval_report import EvaluationReport

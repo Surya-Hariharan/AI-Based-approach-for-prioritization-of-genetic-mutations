@@ -4,9 +4,8 @@ import torch.nn as nn
 import torch.optim as optim
 
 from src.config.data_config import Config
-from src.utils.data_loader import get_data_loaders
-from src.models.baseline import LogisticRegression
-from src.models.mlp import MLP
+from src.utils import get_data_loaders
+from src.models import LogisticRegression, MLP
 from src.training.trainer import Trainer
 
 def parse_args():
