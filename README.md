@@ -155,19 +155,21 @@ Develop an AI-based system to **prioritize genetic mutations** and **distinguish
 AI-Based-approach-for-prioritization-of-genetic-mutations/
 │
 ├── 🌐 Web Application (Production Interface)
-│   ├── backend/                 # Flask REST API
-│   │   ├── app.py              # Main Flask application
-│   │   ├── config.py           # Configuration management
-│   │   └── __init__.py         # Package initialization
-│   ├── frontend/               # Web interface
+│   ├── backend/                # Flask REST API Server
+│   │   ├── app.py             # Main Flask application with endpoints
+│   │   ├── config.py          # Configuration management
+│   │   └── __init__.py        # Package initialization
+│   │
+│   ├── frontend/              # Modern Web Interface
 │   │   ├── templates/
-│   │   │   └── index.html      # Modern responsive UI
+│   │   │   └── index.html     # Responsive UI with drag & drop
 │   │   └── static/
-│   │       ├── css/style.css   # Professional styling
-│   │       └── js/app.js       # Interactive JavaScript
-│   └── main.py                 # Application entry point
+│   │       ├── css/style.css  # Professional styling
+│   │       └── js/app.js      # Interactive JavaScript
+│   │
+│   └── main.py               # Application entry point (multi-mode)
 │
-├── 📓 Research Pipeline (Notebooks)
+├── 📓 Research Pipeline (Jupyter Notebooks)
 │   └── notebooks/
 │       ├── 00_data_pipeline.ipynb      # ⚠️ RUN FIRST: Data processing
 │       ├── 01_data_exploration.ipynb   # EDA and visualization
@@ -177,77 +179,74 @@ AI-Based-approach-for-prioritization-of-genetic-mutations/
 │       ├── 05_uncertainty_analysis.ipynb # MC Dropout + Bayesian
 │       └── 06_gene_level_ranking.ipynb # Gene aggregation
 │
-├── 🔧 Configuration & Data
+├── 🔧 Configuration & Data Management
 │   ├── configs/
-│   │   └── config.yaml         # Single source of truth
+│   │   └── config.yaml        # Centralized configuration
+│   │
 │   ├── data/
-│   │   ├── raw/               # ❌ READ-ONLY: Original datasets
-│   │   ├── interim/           # ⚙️ DERIVED: Engineered features
-│   │   ├── processed/         # ✅ TRAINING-READY: Final data
-│   │   └── uploads/           # 📤 Web app file uploads
-│   └── .env.example           # Environment configuration template
-│
+│   │   ├── raw/              # ❌ READ-ONLY: Original datasets
+│   │   │   ├── clinvar_input.vcf
+│   │   │   ├── labels.csv
+│   │   │   └── mutation_impact_dataset.csv
+│   │   ├── interim/          # ⚙️ DERIVED: Feature engineering
+│   │   │   └── feature_matrix_raw.csv
+│   │   ├── processed/        # ✅ TRAINING-READY: Final data
+│   │   │   ├── feature_matrix_processed.csv
+│   │   │   └── preprocessor.joblib
+│   │   └── uploads/          # 📤 Web app file uploads
+│       
 ├── 🧠 Source Code (Core ML Pipeline)
 │   └── src/
-│       ├── models/              # Model architectures
-│       │   ├── baseline.py      # Logistic regression
+│       ├── models/              # Neural architectures
+│       │   ├── baseline.py      # Logistic regression baseline
 │       │   ├── mlp.py          # Multi-layer perceptron
-│       │   └── gnn.py          # Graph neural network
+│       │   └── gnn.py          # Graph neural networks
 │       │
 │       ├── preprocessing/       # Data processing pipeline
-│       │   ├── data_loader.py   # DataLoader creation
+│       │   ├── data_loader.py   # PyTorch DataLoader creation
 │       │   ├── preprocessing.py # Feature engineering
-│       │   ├── dataset.py       # PyTorch Dataset
+│       │   ├── dataset.py       # Custom PyTorch Dataset
+│       │   ├── pipeline.py      # Processing pipeline
 │       │   └── validation.py    # Data validation
 │       │
 │       ├── evaluation/          # Metrics and visualization
 │       │   ├── metrics.py       # ROC-AUC, PR-AUC, F1
 │       │   ├── plotting.py      # Publication-ready plots
-│       │   └── calibration.py   # Model calibration
+│       │   ├── calibration.py   # Model calibration analysis
+│       │   ├── ranking_metrics.py # Gene ranking evaluation
+│       │   └── reporting.py     # Results reporting
 │       │
 │       ├── uncertainty/         # Confidence estimation
 │       │   ├── mc_dropout.py    # Monte Carlo Dropout
 │       │   └── bayesian_ranking.py # Bayesian ranking
 │       │
 │       ├── ensemble/            # Multi-model approaches
-│       │   └── stacking.py      # Ensemble stacking
+│       │   └── stacking.py      # Ensemble stacking methods
 │       │
 │       ├── aggregation/         # Gene-level analysis
-│       │   └── gene_score.py    # Variant-to-gene scoring
+│       │   └── gene_score.py    # Variant-to-gene score aggregation
 │       │
 │       └── utils/               # Core utilities
-│           ├── seed.py          # Reproducibility
-│           ├── config.py        # Configuration management
-│           └── data_generator.py # Synthetic data
+│           ├── seed.py          # Reproducibility management
+│           ├── config.py        # Configuration utilities
+│           └── data_generator.py # Synthetic data generation
 │
 ├── 📊 Outputs & Results
-│   ├── reports/
-│   │   ├── results/            # Model outputs and rankings
-│   │   │   ├── checkpoints/    # Trained models (.pth, .joblib)
-│   │   │   └── ranked_genes.csv # Gene prioritization results
-│   │   └── figures/            # Plots and visualizations
+│   └── reports/
+│       └── results/            # Model outputs and rankings
+│           ├── ranked_genes.csv # Gene prioritization results
+│           └── checkpoints/    # Trained model files
+│               ├── baseline_model.pth
+│               ├── mlp_best.pth
+│               └── ensemble_model.joblib
 │
-├── 🧪 Documentation & Dependencies
+├── 🧪 Project Configuration
 │   ├── requirements.txt        # Python dependencies
-│   ├── .env.example           # Environment configuration
-│   ├── WEB_APP_GUIDE.md       # Complete API documentation
-│   ├── QUICK_START.md         # 30-second setup guide
-│   ├── LICENSE               # MIT License
-│   └── README.md             # This comprehensive guide
-│   ├── interpretation/           # Model explainability
-│   │   └── explainer.py          # SHAP/attention interpretation
-│   ├── utils/                    # Data utilities
-│   │   ├── data_loader.py        # PyTorch data loading
-│   │   ├── dataset.py            # Custom dataset classes
-│   │   ├── preprocessing.py      # Feature preprocessing
-│   │   └── data_generator.py     # Synthetic data generation
-│   ├── main.py                   # CLI entry point
-│   ├── train.py                  # Model training script
-│   ├── train_ensemble.py         # Ensemble training script
-│   ├── evaluate.py               # Evaluation script
-│   └── prioritize.py             # Inference/prioritization script
-│
-├── data/
+│   ├── setup.py               # Package installation
+│   ├── .env.example          # Environment configuration
+│   ├── .gitignore           # Git ignore patterns
+│   ├── LICENSE              # MIT License
+│   └── README.md            # This comprehensive guide
 ```
 
 ---
