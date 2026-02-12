@@ -247,20 +247,10 @@ AI-Based-approach-for-prioritization-of-genetic-mutations/
 │   ├── .gitignore           # Git ignore patterns
 │   ├── LICENSE              # MIT License
 │   └── README.md            # This comprehensive guide
-```
-
 ---
 
 ## 🚀 Quick Start
 
-### 1. Installation
-
-```bash
-# Clone the repository
-git clone <repo_url>
-cd AI-Based-approach-for-prioritization-of-genetic-mutations
-
-# Install dependencies
 ### 1️⃣ Installation
 
 ```bash
