@@ -29,24 +29,36 @@ try:
 except ImportError as e:
     print(f"Import error: {e}")
     print("Make sure to run this from the project root or install the package")
+    print(f"Project root: {PROJECT_ROOT}")
+    print("Available paths:", sys.path[:3])
     sys.exit(1)
 
-# Initialize Flask app with proper paths
-app = Flask(__name__, 
-            template_folder=os.path.join(PROJECT_ROOT, 'frontend', 'templates'),
-            static_folder=os.path.join(PROJECT_ROOT, 'frontend', 'static'))
+def create_app(config_name='development'):
+    """Application factory pattern"""
+    from .config import config
+    
+    # Initialize Flask app with proper paths
+    app = Flask(__name__, 
+                template_folder=os.path.join(PROJECT_ROOT, 'frontend', 'templates'),
+                static_folder=os.path.join(PROJECT_ROOT, 'frontend', 'static'))
+    
+    # Load configuration
+    app.config.from_object(config[config_name])
+    
+    # Enable CORS for frontend-backend separation
+    CORS(app)
+    
+    # Additional configuration
+    app.config['UPLOAD_FOLDER'] = os.path.join(PROJECT_ROOT, 'data', 'uploads')
+    app.config['ALLOWED_EXTENSIONS'] = {'csv', 'vcf', 'txt'}
+    
+    # Ensure upload folder exists
+    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+    
+    return app
 
-# Enable CORS for frontend-backend separation
-CORS(app)
-
-# Configuration
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
-app.config['UPLOAD_FOLDER'] = os.path.join(PROJECT_ROOT, 'data', 'uploads')
-app.config['ALLOWED_EXTENSIONS'] = {'csv', 'vcf', 'txt'}
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'genetic-mutation-ai-secret-key-2026')
-
-# Ensure upload folder exists
-os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+# Initialize Flask app
+app = create_app(os.getenv('FLASK_ENV', 'development'))
 
 # Global model storage
 models = {}
