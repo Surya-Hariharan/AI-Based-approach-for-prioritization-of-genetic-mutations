@@ -47,6 +47,15 @@ AI-Based-approach-for-prioritization-of-genetic-mutations/
 │   ├── 05_uncertainty_analysis.ipynb     # MC Dropout + Bayesian ranking
 │   └── 06_gene_level_ranking.ipynb       # Gene aggregation
 │
+├── app.py                       # 🌐 Flask web application
+├── templates/                   # Web interface HTML
+│   └── index.html
+├── static/                      # CSS and JavaScript
+│   ├── css/
+│   │   └── style.css
+│   └── js/
+│       └── app.js
+│
 ├── src/                         # Source code (import from here!)
 │   ├── models/                  # Model architectures (NO training logic)
 │   │   ├── baseline.py          # LogisticRegression
@@ -141,7 +150,28 @@ jupyter notebook
 5. [05_uncertainty_analysis.ipynb](notebooks/05_uncertainty_analysis.ipynb) - Quantify uncertainty
 6. [06_gene_level_ranking.ipynb](notebooks/06_gene_level_ranking.ipynb) - Generate gene rankings
 
-### 3. Data Lifecycle
+### 3. Web Application 🌐
+
+After training your models, launch the web interface for easy predictions:
+
+```bash
+# Install web dependencies (if not already installed)
+pip install flask werkzeug
+
+# Start the server
+python app.py
+```
+
+Open your browser to `http://localhost:5000` to access:
+- 📤 **File Upload**: Batch predictions from CSV files
+- ⌨️ **Manual Input**: Single mutation predictions
+- 📊 **Model Selection**: Choose between MLP, Baseline, or Ensemble
+- 📈 **Real-time Results**: Instant predictions with confidence scores
+
+**Quick Start**: See [QUICK_START.md](QUICK_START.md) for 30-second setup  
+**Detailed Guide**: See [WEB_APP_GUIDE.md](WEB_APP_GUIDE.md) for API documentation and examples
+
+### 4. Data Lifecycle
 
 This project enforces strict data separation: **RAW → INTERIM → PROCESSED**
 
@@ -160,7 +190,7 @@ data/
 
 See [DATA_LIFECYCLE.md](DATA_LIFECYCLE.md) for complete documentation.
 
-### 4. Configuration
+### 5. Configuration
 
 Edit [configs/config.yaml](configs/config.yaml) to customize:
 - Data paths
@@ -247,6 +277,8 @@ from src.uncertainty import MCDropoutEstimator, BayesianRanker
 - **[DATA_LIFECYCLE.md](DATA_LIFECYCLE.md)**: Data pipeline and lifecycle management
 - **[REFACTORING_SUMMARY.md](REFACTORING_SUMMARY.md)**: Comprehensive architectural documentation
 - **[QUICK_REFERENCE.md](QUICK_REFERENCE.md)**: Quick start guide and API reference
+- **[WEB_APP_GUIDE.md](WEB_APP_GUIDE.md)**: Web application API documentation
+- **[QUICK_START.md](QUICK_START.md)**: 30-second web app setup
 
 ---
 

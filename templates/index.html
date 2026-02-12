@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genetic Mutation Prioritization System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                        <path d="M20 5L30 15L20 25L10 15L20 5Z" fill="#4F46E5"/>
+                        <path d="M20 15L30 25L20 35L10 25L20 15Z" fill="#818CF8" opacity="0.7"/>
+                    </svg>
+                    <h1>Genetic Mutation Prioritization</h1>
+                </div>
+                <div class="status" id="status">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Loading...</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Info Cards -->
+            <div class="info-cards">
+                <div class="card info-card">
+                    <div class="card-icon">📊</div>
+                    <div class="card-content">
+                        <h3 id="modelCount">0</h3>
+                        <p>Models Available</p>
+                    </div>
+                </div>
+                <div class="card info-card">
+                    <div class="card-icon">🧬</div>
+                    <div class="card-content">
+                        <h3 id="predictionCount">0</h3>
+                        <p>Predictions Made</p>
+                    </div>
+                </div>
+                <div class="card info-card">
+                    <div class="card-icon">🎯</div>
+                    <div class="card-content">
+                        <h3 id="accuracy">N/A</h3>
+                        <p>Model Accuracy</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Prediction Section -->
+            <div class="prediction-section">
+                <div class="card">
+                    <h2>Make a Prediction</h2>
+                    
+                    <!-- Model Selection -->
+                    <div class="form-group">
+                        <label for="modelSelect">Select Model</label>
+                        <select id="modelSelect" class="form-control">
+                            <option value="mlp">MLP (Neural Network)</option>
+                            <option value="baseline">Baseline (Logistic Regression)</option>
+                            <option value="ensemble">Ensemble (Stacking)</option>
+                        </select>
+                    </div>
+
+                    <!-- Input Method Tabs -->
+                    <div class="tabs">
+                        <button class="tab-button active" data-tab="file">Upload File</button>
+                        <button class="tab-button" data-tab="manual">Manual Input</button>
+                    </div>
+
+                    <!-- File Upload Tab -->
+                    <div id="file" class="tab-content active">
+                        <div class="upload-area" id="uploadArea">
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                            <p class="upload-text">Drag & drop your CSV file here</p>
+                            <p class="upload-subtext">or click to browse</p>
+                            <input type="file" id="fileInput" accept=".csv,.vcf" hidden>
+                        </div>
+                        <div id="fileInfo" class="file-info" style="display: none;">
+                            <span id="fileName"></span>
+                            <button id="clearFile" class="btn-secondary btn-sm">Clear</button>
+                        </div>
+                        <button id="uploadBtn" class="btn-primary" disabled>
+                            <span>Upload & Predict</span>
+                        </button>
+                    </div>
+
+                    <!-- Manual Input Tab -->
+                    <div id="manual" class="tab-content">
+                        <div class="form-group">
+                            <label for="featureInput">Enter Feature Values (comma-separated)</label>
+                            <textarea id="featureInput" class="form-control" rows="4" 
+                                placeholder="Example: 0.5, 0.3, 0.8, 0.2, 0.6, ...&#10;&#10;Enter all feature values separated by commas. The number of features should match your model's expected input."></textarea>
+                        </div>
+                        <button id="predictBtn" class="btn-primary">
+                            <span>Predict</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Results Section -->
+                <div class="card results-card" id="resultsCard" style="display: none;">
+                    <h2>Prediction Results</h2>
+                    <div id="resultsContent"></div>
+                </div>
+            </div>
+
+            <!-- Statistics Section -->
+            <div class="card stats-card">
+                <h2>System Statistics</h2>
+                <div id="statsContent">
+                    <p class="loading-text">Loading statistics...</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>AI-Based Genetic Mutation Prioritization System © 2026</p>
+            <p class="footer-links">
+                <a href="https://github.com/Surya-Hariharan/AI-Based-approach-for-prioritization-of-genetic-mutations" target="_blank">GitHub</a>
+                <span>•</span>
+                <a href="#" onclick="showDocumentation(); return false;">Documentation</a>
+            </p>
+        </footer>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="spinner"></div>
+        <p>Processing...</p>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

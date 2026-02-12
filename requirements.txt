@@ -9,4 +9,6 @@ scipy>=1.7.0
 pyyaml>=5.4.1
 tqdm>=4.60.0
 networkx>=2.6.0
+flask>=2.0.0
+werkzeug>=2.0.0
 # Optional: torch_geometric
