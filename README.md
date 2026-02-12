@@ -155,24 +155,27 @@ Develop an AI-based system to **prioritize genetic mutations** and **distinguish
 AI-Based-approach-for-prioritization-of-genetic-mutations/
 │
 ├── 🌐 Web Application (Production Interface)
-│   ├── app.py                   # Flask backend with REST API
-│   ├── templates/
-│   │   └── index.html          # Modern responsive web interface
-│   ├── static/
-│   │   ├── css/style.css       # Professional styling
-│   │   └── js/app.js           # Interactive JavaScript
-│   ├── WEB_APP_GUIDE.md        # Complete API documentation
-│   └── QUICK_START.md          # 30-second setup guide
+│   ├── backend/                 # Flask REST API
+│   │   ├── app.py              # Main Flask application
+│   │   ├── config.py           # Configuration management
+│   │   └── __init__.py         # Package initialization
+│   ├── frontend/               # Web interface
+│   │   ├── templates/
+│   │   │   └── index.html      # Modern responsive UI
+│   │   └── static/
+│   │       ├── css/style.css   # Professional styling
+│   │       └── js/app.js       # Interactive JavaScript
+│   └── main.py                 # Application entry point
 │
 ├── 📓 Research Pipeline (Notebooks)
-│   ├── notebooks/
-│   │   ├── 00_data_pipeline.ipynb      # ⚠️ RUN FIRST: Data processing
-│   │   ├── 01_data_exploration.ipynb   # EDA and visualization
-│   │   ├── 02_baseline_training.ipynb  # Logistic regression
-│   │   ├── 03_mlp_training.ipynb       # Deep learning (MLP)
-│   │   ├── 04_ensemble_training.ipynb  # Stacking ensemble
-│   │   ├── 05_uncertainty_analysis.ipynb # MC Dropout + Bayesian
-│   │   └── 06_gene_level_ranking.ipynb # Gene aggregation
+│   └── notebooks/
+│       ├── 00_data_pipeline.ipynb      # ⚠️ RUN FIRST: Data processing
+│       ├── 01_data_exploration.ipynb   # EDA and visualization
+│       ├── 02_baseline_training.ipynb  # Logistic regression
+│       ├── 03_mlp_training.ipynb       # Deep learning (MLP)
+│       ├── 04_ensemble_training.ipynb  # Stacking ensemble
+│       ├── 05_uncertainty_analysis.ipynb # MC Dropout + Bayesian
+│       └── 06_gene_level_ranking.ipynb # Gene aggregation
 │
 ├── 🔧 Configuration & Data
 │   ├── configs/
@@ -182,39 +185,40 @@ AI-Based-approach-for-prioritization-of-genetic-mutations/
 │   │   ├── interim/           # ⚙️ DERIVED: Engineered features
 │   │   ├── processed/         # ✅ TRAINING-READY: Final data
 │   │   └── uploads/           # 📤 Web app file uploads
+│   └── .env.example           # Environment configuration template
 │
 ├── 🧠 Source Code (Core ML Pipeline)
-│   ├── src/
-│   │   ├── models/              # Model architectures
-│   │   │   ├── baseline.py      # Logistic regression
-│   │   │   ├── mlp.py          # Multi-layer perceptron
-│   │   │   └── gnn.py          # Graph neural network
-│   │   │
-│   │   ├── preprocessing/       # Data processing pipeline
-│   │   │   ├── data_loader.py   # DataLoader creation
-│   │   │   ├── preprocessing.py # Feature engineering
-│   │   │   ├── dataset.py       # PyTorch Dataset
-│   │   │   └── validation.py    # Data validation
-│   │   │
-│   │   ├── evaluation/          # Metrics and visualization
-│   │   │   ├── metrics.py       # ROC-AUC, PR-AUC, F1
-│   │   │   ├── plotting.py      # Publication-ready plots
-│   │   │   └── calibration.py   # Model calibration
-│   │   │
-│   │   ├── uncertainty/         # Confidence estimation
-│   │   │   ├── mc_dropout.py    # Monte Carlo Dropout
-│   │   │   └── bayesian_ranking.py # Bayesian ranking
-│   │   │
-│   │   ├── ensemble/            # Multi-model approaches
-│   │   │   └── stacking.py      # Ensemble stacking
-│   │   │
-│   │   ├── aggregation/         # Gene-level analysis
-│   │   │   └── gene_score.py    # Variant-to-gene scoring
-│   │   │
-│   │   └── utils/               # Core utilities
-│   │       ├── seed.py          # Reproducibility
-│   │       ├── config.py        # Configuration management
-│   │       └── data_generator.py # Synthetic data
+│   └── src/
+│       ├── models/              # Model architectures
+│       │   ├── baseline.py      # Logistic regression
+│       │   ├── mlp.py          # Multi-layer perceptron
+│       │   └── gnn.py          # Graph neural network
+│       │
+│       ├── preprocessing/       # Data processing pipeline
+│       │   ├── data_loader.py   # DataLoader creation
+│       │   ├── preprocessing.py # Feature engineering
+│       │   ├── dataset.py       # PyTorch Dataset
+│       │   └── validation.py    # Data validation
+│       │
+│       ├── evaluation/          # Metrics and visualization
+│       │   ├── metrics.py       # ROC-AUC, PR-AUC, F1
+│       │   ├── plotting.py      # Publication-ready plots
+│       │   └── calibration.py   # Model calibration
+│       │
+│       ├── uncertainty/         # Confidence estimation
+│       │   ├── mc_dropout.py    # Monte Carlo Dropout
+│       │   └── bayesian_ranking.py # Bayesian ranking
+│       │
+│       ├── ensemble/            # Multi-model approaches
+│       │   └── stacking.py      # Ensemble stacking
+│       │
+│       ├── aggregation/         # Gene-level analysis
+│       │   └── gene_score.py    # Variant-to-gene scoring
+│       │
+│       └── utils/               # Core utilities
+│           ├── seed.py          # Reproducibility
+│           ├── config.py        # Configuration management
+│           └── data_generator.py # Synthetic data
 │
 ├── 📊 Outputs & Results
 │   ├── reports/
@@ -223,12 +227,13 @@ AI-Based-approach-for-prioritization-of-genetic-mutations/
 │   │   │   └── ranked_genes.csv # Gene prioritization results
 │   │   └── figures/            # Plots and visualizations
 │
-├── 🧪 Testing & Documentation
-│   ├── tests/                  # Unit tests
-│   ├── docs/                   # Additional documentation
+├── 🧪 Documentation & Dependencies
 │   ├── requirements.txt        # Python dependencies
-│   ├── LICENSE                 # MIT License
-│   └── README.md              # This comprehensive guide
+│   ├── .env.example           # Environment configuration
+│   ├── WEB_APP_GUIDE.md       # Complete API documentation
+│   ├── QUICK_START.md         # 30-second setup guide
+│   ├── LICENSE               # MIT License
+│   └── README.md             # This comprehensive guide
 │   ├── interpretation/           # Model explainability
 │   │   └── explainer.py          # SHAP/attention interpretation
 │   ├── utils/                    # Data utilities
@@ -257,56 +262,80 @@ git clone <repo_url>
 cd AI-Based-approach-for-prioritization-of-genetic-mutations
 
 # Install dependencies
+### 1️⃣ Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/Surya-Hariharan/AI-Based-approach-for-prioritization-of-genetic-mutations.git
+cd AI-Based-approach-for-prioritization-of-genetic-mutations
+
+# Install dependencies
 pip install -r requirements.txt
 ```
 
-### 2️⃣ Setup Data Pipeline
+### 2️⃣ Quick Start (Web Application)
 
-Run the data processing pipeline **first** (required before training):
-
-```bash
-# Start Jupyter
-jupyter notebook
-
-# Open and run notebooks in order:
-# 1. notebooks/00_data_pipeline.ipynb  (⚠️ REQUIRED FIRST)
-```
-
-### 3️⃣ Train Models
-
-**Research Pipeline (Recommended Order):**
-```bash
-# In Jupyter, run these notebooks:
-01_data_exploration.ipynb       # Understand your data
-02_baseline_training.ipynb       # Establish baseline performance  
-03_mlp_training.ipynb           # Train deep learning model
-04_ensemble_training.ipynb       # Combine models for better performance
-05_uncertainty_analysis.ipynb    # Quantify prediction confidence
-06_gene_level_ranking.ipynb      # Generate gene-level priorities
-```
-
-### 4️⃣ Launch Web Application 🌐
-
-After training at least one model, start the production interface:
+**Launch the web interface immediately:**
 
 ```bash
-# Start the Flask server
-python app.py
+# Method 1: Direct launch
+python main.py --mode web
+
+# Method 2: Development mode with auto-reload
+python main.py --mode web --debug
+
+# Method 3: Production mode
+python main.py --mode web --config production --host 0.0.0.0
 ```
 
-🌐 **Access the Web Interface**: `http://localhost:5000`
+🌐 **Access**: `http://localhost:5000`
 
-**Features:**
+**Features Available:**
 - 📤 **Drag & Drop Upload**: Batch analyze CSV files
 - ⌨️ **Manual Input**: Test individual mutations
 - 🎯 **Model Selection**: Choose MLP, Baseline, or Ensemble
 - 📊 **Real-time Visualization**: Confidence scores and probability bars
 - 📈 **Performance Dashboard**: System statistics and model metrics
 
-**Quick Setup**: [QUICK_START.md](QUICK_START.md) (30 seconds)  
-**Complete Guide**: [WEB_APP_GUIDE.md](WEB_APP_GUIDE.md) (API docs & examples)
+### 3️⃣ Research Workflow
 
-### 5️⃣ Data Lifecycle
+**Launch research environment:**
+
+```bash
+# Start Jupyter for research pipeline
+python main.py --mode research
+
+# Or manually
+jupyter notebook
+```
+
+**Notebook Execution Order:**
+```bash
+# Essential workflow:
+00_data_pipeline.ipynb       # ⚠️ RUN FIRST: Data processing
+01_data_exploration.ipynb    # Understand your data
+02_baseline_training.ipynb   # Establish baseline performance  
+03_mlp_training.ipynb        # Train deep learning model
+04_ensemble_training.ipynb   # Combine models for better performance
+05_uncertainty_analysis.ipynb # Quantify prediction confidence
+06_gene_level_ranking.ipynb  # Generate gene-level priorities
+```
+
+### 4️⃣ Configuration
+
+**Environment Setup:**
+```bash
+# Copy example environment file
+cp .env.example .env
+
+# Edit configuration
+nano .env  # or use your preferred editor
+```
+
+**Key Settings:**
+- `FLASK_ENV`: development/production
+- `USE_GPU`: Enable/disable GPU acceleration
+- `DEFAULT_MODEL`: mlp/baseline/ensemble
 
 This project enforces strict data separation: **RAW → INTERIM → PROCESSED**
 
