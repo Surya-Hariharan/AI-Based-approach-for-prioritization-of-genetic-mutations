@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 import os
 import sys
+os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
 # Add project root to path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
