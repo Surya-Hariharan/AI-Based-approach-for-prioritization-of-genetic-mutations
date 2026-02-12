@@ -11,19 +11,39 @@ import joblib
 import numpy as np
 import pandas as pd
 from flask import Flask, render_template, request, jsonify
+from flask_cors import CORS
 from werkzeug.utils import secure_filename
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # Add project root to path
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, PROJECT_ROOT)
 
-from src.models.baseline import LogisticRegression as BaselineModel
-from src.models.mlp import MLP
-from src.preprocessing.preprocessing import load_preprocessor
+try:
+    from src.models.baseline import LogisticRegression as BaselineModel
+    from src.models.mlp import MLP
+    from src.preprocessing.preprocessing import load_preprocessor
+except ImportError as e:
+    print(f"Import error: {e}")
+    print("Make sure to run this from the project root or install the package")
+    sys.exit(1)
 
-app = Flask(__name__)
+# Initialize Flask app with proper paths
+app = Flask(__name__, 
+            template_folder=os.path.join(PROJECT_ROOT, 'frontend', 'templates'),
+            static_folder=os.path.join(PROJECT_ROOT, 'frontend', 'static'))
+
+# Enable CORS for frontend-backend separation
+CORS(app)
+
+# Configuration
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
-app.config['UPLOAD_FOLDER'] = 'data/uploads'
+app.config['UPLOAD_FOLDER'] = os.path.join(PROJECT_ROOT, 'data', 'uploads')
 app.config['ALLOWED_EXTENSIONS'] = {'csv', 'vcf', 'txt'}
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'genetic-mutation-ai-secret-key-2026')
 
 # Ensure upload folder exists
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
@@ -46,40 +66,52 @@ def load_models():
     print("Loading models...")
     
     # Load preprocessor
-    preprocessor_path = 'data/processed/preprocessor.joblib'
+    preprocessor_path = os.path.join(PROJECT_ROOT, 'data', 'processed', 'preprocessor.joblib')
     if os.path.exists(preprocessor_path):
-        preprocessor = joblib.load(preprocessor_path)
-        print("✓ Preprocessor loaded")
+        try:
+            preprocessor = joblib.load(preprocessor_path)
+            print("✓ Preprocessor loaded")
+        except Exception as e:
+            print(f"⚠ Failed to load preprocessor: {e}")
     
     # Load baseline model
-    baseline_path = 'reports/results/checkpoints/baseline_model.pth'
+    baseline_path = os.path.join(PROJECT_ROOT, 'reports', 'results', 'checkpoints', 'baseline_model.pth')
     if os.path.exists(baseline_path):
-        checkpoint = torch.load(baseline_path, map_location=device)
-        input_dim = checkpoint.get('input_dim', 50)
-        baseline = BaselineModel(input_dim=input_dim).to(device)
-        baseline.load_state_dict(checkpoint['model_state_dict'])
-        baseline.eval()
-        models['baseline'] = baseline
-        print("✓ Baseline model loaded")
+        try:
+            checkpoint = torch.load(baseline_path, map_location=device)
+            input_dim = checkpoint.get('input_dim', 50)
+            baseline = BaselineModel(input_dim=input_dim).to(device)
+            baseline.load_state_dict(checkpoint['model_state_dict'])
+            baseline.eval()
+            models['baseline'] = baseline
+            print("✓ Baseline model loaded")
+        except Exception as e:
+            print(f"⚠ Failed to load baseline model: {e}")
     
     # Load MLP model
-    mlp_path = 'reports/results/checkpoints/mlp_best.pth'
+    mlp_path = os.path.join(PROJECT_ROOT, 'reports', 'results', 'checkpoints', 'mlp_best.pth')
     if os.path.exists(mlp_path):
-        checkpoint = torch.load(mlp_path, map_location=device)
-        input_dim = checkpoint.get('input_dim', 50)
-        hidden_layers = checkpoint.get('hidden_layers', [256, 128, 64])
-        mlp = MLP(input_dim=input_dim, hidden_layers=hidden_layers).to(device)
-        mlp.load_state_dict(checkpoint['model_state_dict'])
-        mlp.eval()
-        models['mlp'] = mlp
-        print("✓ MLP model loaded")
+        try:
+            checkpoint = torch.load(mlp_path, map_location=device)
+            input_dim = checkpoint.get('input_dim', 50)
+            hidden_layers = checkpoint.get('hidden_layers', [256, 128, 64])
+            mlp = MLP(input_dim=input_dim, hidden_layers=hidden_layers).to(device)
+            mlp.load_state_dict(checkpoint['model_state_dict'])
+            mlp.eval()
+            models['mlp'] = mlp
+            print("✓ MLP model loaded")
+        except Exception as e:
+            print(f"⚠ Failed to load MLP model: {e}")
     
     # Load ensemble model
-    ensemble_path = 'reports/results/checkpoints/ensemble_model.joblib'
+    ensemble_path = os.path.join(PROJECT_ROOT, 'reports', 'results', 'checkpoints', 'ensemble_model.joblib')
     if os.path.exists(ensemble_path):
-        ensemble = joblib.load(ensemble_path)
-        models['ensemble'] = ensemble
-        print("✓ Ensemble model loaded")
+        try:
+            ensemble = joblib.load(ensemble_path)
+            models['ensemble'] = ensemble
+            print("✓ Ensemble model loaded")
+        except Exception as e:
+            print(f"⚠ Failed to load ensemble model: {e}")
     
     if not models:
         print("⚠ Warning: No models found. Please train models first.")
@@ -280,7 +312,7 @@ def predict_batch():
 def get_stats():
     """Get model statistics"""
     try:
-        ranked_genes_path = 'reports/results/ranked_genes.csv'
+        ranked_genes_path = os.path.join(PROJECT_ROOT, 'reports', 'results', 'ranked_genes.csv')
         
         stats = {
             'models_available': len(models),
@@ -306,11 +338,23 @@ if __name__ == '__main__':
         print(f"{'='*60}")
         print(f"Models loaded: {', '.join(models.keys())}")
         print(f"Device: {device}")
+        print(f"Project root: {PROJECT_ROOT}")
+        print(f"Frontend path: {app.template_folder}")
+        print(f"Static path: {app.static_folder}")
         print(f"{'='*60}\n")
         
         # Run the app
-        app.run(debug=True, host='0.0.0.0', port=5000)
+        debug_mode = os.getenv('FLASK_DEBUG', 'True').lower() == 'true'
+        port = int(os.getenv('PORT', 5000))
+        host = os.getenv('HOST', '127.0.0.1')
+        
+        print(f"Starting server on http://{host}:{port}")
+        app.run(debug=debug_mode, host=host, port=port)
     else:
         print("\n❌ Error: No models found. Please train models first using the notebooks.")
         print("Run notebooks 02_baseline_training.ipynb, 03_mlp_training.ipynb, or 04_ensemble_training.ipynb")
+        print(f"Expected model paths:")
+        print(f"  - {os.path.join(PROJECT_ROOT, 'reports', 'results', 'checkpoints', 'baseline_model.pth')}")
+        print(f"  - {os.path.join(PROJECT_ROOT, 'reports', 'results', 'checkpoints', 'mlp_best.pth')}")
+        print(f"  - {os.path.join(PROJECT_ROOT, 'reports', 'results', 'checkpoints', 'ensemble_model.joblib')}")
         sys.exit(1)
